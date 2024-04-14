@@ -1,4 +1,6 @@
-using BarberiApp.WebApi.Models;
+using BarberiAppAutenticacion.Models;
+using BarberiAppAutenticacion.Interface;
+using BarberiAppAutenticacion.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Donot forgot to add ConnectionStrings as "dbConnection" to the appsetting.json file
 builder.Services.AddDbContext<DatabaseContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
+builder.Services.AddTransient<IUsuario, UsuarioRepository>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

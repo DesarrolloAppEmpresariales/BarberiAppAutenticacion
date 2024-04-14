@@ -1,4 +1,4 @@
-﻿namespace BarberiApp.WebApi.Models
+﻿namespace BarberiAppAutenticacion.Models
 {
     public class Usuario
     {

@@ -1,7 +1,7 @@
-﻿using BarberiApp.WebApi.Models;
+﻿using BarberiAppAutenticacion.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BarberiApp.WebApi.Models
+namespace BarberiAppAutenticacion.Models
 {
     public partial class DatabaseContext : DbContext
     {
