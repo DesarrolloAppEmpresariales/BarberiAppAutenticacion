@@ -14,10 +14,12 @@ namespace BarberiAppAutenticacion.Controllers
     public class UsuarioController : Controller
     {
         private readonly IUsuario _IUsuario;
+        private readonly ILogger<UsuarioController> _Logger;
 
-        public UsuarioController(IUsuario IUsuario)
+        public UsuarioController(IUsuario IUsuario, ILogger<UsuarioController> logger)
         {
             _IUsuario = IUsuario;
+            _Logger = logger;
         }
 
         //Roles (1 'SU') (2 'Admin') (3 'Barbero') (4 'Cliente')    
@@ -26,6 +28,7 @@ namespace BarberiAppAutenticacion.Controllers
         [Authorize(Roles = "1,2,3")]
         public async Task<ActionResult<IEnumerable<Usuario>>> Get()
         {
+            _Logger.LogWarning("Se realiza la consulta de usuarios");
             return await Task.FromResult(_IUsuario.ObtenerListaUsuarios());
         }
 
