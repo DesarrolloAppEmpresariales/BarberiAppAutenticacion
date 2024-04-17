@@ -37,7 +37,7 @@ namespace BarberiApp.WebApi.Controllers
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         //new Claim("UserId", user.UserId.ToString()),
                         new Claim("Email", user.Email),
-                        new Claim("UserName", user.Alias),
+                        new Claim(ClaimTypes.Name, user.Alias),
                         new Claim("RolId", user.RolId.ToString()),
                         new Claim(ClaimTypes.Role, user.RolId.ToString())
                     };
