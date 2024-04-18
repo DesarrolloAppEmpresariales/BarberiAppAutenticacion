@@ -37,12 +37,12 @@ namespace BarberiAppAutenticacion.Controllers
         [Authorize(Roles = "1,4")]
         public async Task<ActionResult<Usuario>> Get(int id)
         {
-            var cita = await Task.FromResult(_IUsuario.ObtenerUsuarioPorId(id));
-            if (cita == null)
+            var usuario = await Task.FromResult(_IUsuario.ObtenerUsuarioPorId(id));
+            if (usuario == null)
             {
                 return NotFound();
             }
-            return cita;
+            return usuario;
         }
 
         // POST: CitaController/Create
