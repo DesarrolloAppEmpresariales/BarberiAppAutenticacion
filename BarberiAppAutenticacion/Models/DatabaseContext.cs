@@ -20,7 +20,8 @@ namespace BarberiAppAutenticacion.Models
         {
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.UsuarioID);
+                //entity.HasNoKey();
                 entity.ToTable("Usuario");
                 entity.Property(e => e.UsuarioID).HasColumnName("Id");
                 entity.Property(e => e.Email).HasMaxLength(180).IsUnicode(false);
