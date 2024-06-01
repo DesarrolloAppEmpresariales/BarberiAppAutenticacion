@@ -84,11 +84,11 @@ namespace BDDAutenticacion.Features
         [Xunit.SkippableFactAttribute(DisplayName="Obtener la lista de usuarios con un token válido")]
         [Xunit.TraitAttribute("FeatureTitle", "Usuario")]
         [Xunit.TraitAttribute("Description", "Obtener la lista de usuarios con un token válido")]
-        [Xunit.TraitAttribute("Category", "mytag")]
+        [Xunit.TraitAttribute("Category", "ListaUsuarios")]
         public virtual void ObtenerLaListaDeUsuariosConUnTokenValido()
         {
             string[] tagsOfScenario = new string[] {
-                    "mytag"};
+                    "ListaUsuarios"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Obtener la lista de usuarios con un token válido", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 8
@@ -125,6 +125,64 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 13
  testRunner.And("la respuesta debe contener una lista de usuarios", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Obtener un usuario con un token válido y Id")]
+        [Xunit.TraitAttribute("FeatureTitle", "Usuario")]
+        [Xunit.TraitAttribute("Description", "Obtener un usuario con un token válido y Id")]
+        [Xunit.TraitAttribute("Category", "UsuarioId")]
+        public virtual void ObtenerUnUsuarioConUnTokenValidoYId()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "UsuarioId"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Obtener un usuario con un token válido y Id", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 17
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 18
+ testRunner.Given("que la API está disponible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 19
+ testRunner.And("tengo un token válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.When("hago una solicitud GET a \"/api/usuario/5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("el código de respuesta debe ser 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+ testRunner.And("la respuesta debe contener el correo \"cliente01@yopmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("la respuesta debe contener el alias \"adminPlat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("la respuesta debe contener la contraseña \"1234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("la la respuesta debe contener el rol_id 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

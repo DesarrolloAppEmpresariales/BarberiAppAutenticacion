@@ -1,10 +1,8 @@
-using System;
 using System.Net;
-using System.Collections.Generic;
 using RestSharp;
-using TechTalk.SpecFlow;
 using Newtonsoft.Json;
 using BarberiAppAutenticacion.Models;
+using Serilog;
 
 namespace BDDAutenticacion.StepDefinitions
 {
@@ -26,7 +24,34 @@ namespace BDDAutenticacion.StepDefinitions
         [Given(@"tengo un token válido")]
         public void GivenTengoUnTokenValido()
         {
-            _token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiI3OTVkZmQ0Yi1kYTk2LTQ2NjUtYWIxNi04NjEwNzg4NGUyODkiLCJpYXQiOiIxLzA2LzIwMjQgNzoxNzo1MCBhLsKgbS4iLCJFbWFpbCI6ImNsaWVudGUwMUB5b3BtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pblBsYXQiLCJSb2xJZCI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzE3MjI2ODcwLCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVFNlcnZpY2VQb3N0bWFuQ2xpZW50In0.mWpRUGsSdiFeQhCaiW5tYUn-hBtK-RaUPb8ZzFvGwTU";
+            var authClient = new RestClient("https://localhost:7025");
+            var authRequest = new RestRequest("/api/token", Method.Post);
+
+            var body = new
+            {
+                
+                usuarioID = 0,
+                email = "string",
+                alias = "adminPlat",
+                contraseña = "1234",
+                rolId = 2
+
+            };
+
+            // Serializar el cuerpo como JSON
+            authRequest.AddJsonBody(body);
+
+            var authResponse = authClient.Execute(authRequest);
+
+            if (authResponse.StatusCode == HttpStatusCode.OK)
+            {
+                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(authResponse.Content);
+                _token = tokenResponse.AccessToken; 
+            }
+            else
+            {
+                throw new Exception("Failed to obtain token");
+            }
         }
 
         [When(@"hago una solicitud GET a ""([^""]*)""")]
@@ -35,6 +60,12 @@ namespace BDDAutenticacion.StepDefinitions
             _request = new RestRequest(resource, Method.Get);
             _request.AddHeader("Authorization", $"Bearer {_token}");
             _response = _client.Execute(_request);
+
+            // Log request and response details for debugging
+            Log.Information("Request URL: {Url}", _client.BuildUri(_request));
+            Log.Information("Request Headers: {Headers}", string.Join(", ", _request.Parameters));
+            Log.Information("Response Status Code: {StatusCode}", _response.StatusCode);
+            Log.Information("Response Content: {Content}", _response.Content);
         }
 
         [Then(@"el código de respuesta debe ser (.*)")]
@@ -49,5 +80,42 @@ namespace BDDAutenticacion.StepDefinitions
             var users = JsonConvert.DeserializeObject<List<Usuario>>(_response.Content);
             Assert.NotEmpty(users);
         }
+
+
+        [Then(@"la respuesta debe contener el correo ""([^""]*)""")]
+        public void ThenLaRespuestaDebeContenerElCorreo(string correo)
+        {
+            var user = JsonConvert.DeserializeObject<Usuario>(_response.Content);
+            Assert.Equal(correo, user.Email);
+        }
+
+        [Then(@"la respuesta debe contener el alias ""([^""]*)""")]
+        public void ThenLaRespuestaDebeContenerElAlias(string alias)
+        {
+            var user = JsonConvert.DeserializeObject<Usuario>(_response.Content);
+            Assert.Equal(alias, user.Alias);
+        }
+
+        [Then(@"la respuesta debe contener la contraseña ""([^""]*)""")]
+        public void ThenLaRespuestaDebeContenerLaContrasena(string contraseña)
+        {
+            var user = JsonConvert.DeserializeObject<Usuario>(_response.Content);
+            Assert.Equal(contraseña, user.Contraseña);
+        }
+
+        [Then(@"la la respuesta debe contener el rol_id (.*)")]
+        public void ThenLaLaRespuestaDebeContenerElRol_Id(int rolId)
+        {
+            var user = JsonConvert.DeserializeObject<Usuario>(_response.Content);
+            Assert.Equal(rolId, user.RolId);
+        }
+
+
+    }
+
+    public class TokenResponse
+    {
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; }
     }
 }

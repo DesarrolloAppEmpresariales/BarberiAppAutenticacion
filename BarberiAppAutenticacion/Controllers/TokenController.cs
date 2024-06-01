@@ -51,7 +51,9 @@ namespace BarberiApp.WebApi.Controllers
                         expires: DateTime.UtcNow.AddMinutes(10),
                         signingCredentials: signIn);
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    var response = new { access_token = new JwtSecurityTokenHandler().WriteToken(token) };
+
+                    return Ok(response);
                 }
                 else
                 {
