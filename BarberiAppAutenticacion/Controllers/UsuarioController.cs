@@ -25,7 +25,7 @@ namespace BarberiAppAutenticacion.Controllers
         //Roles (1 'SU') (2 'Admin') (3 'Barbero') (4 'Cliente')    
         // GET: CitaController
         [HttpGet]
-        [Authorize(Roles = "1,2,3")]
+        [Authorize(Roles = "2,3")]
         public async Task<ActionResult<IEnumerable<Usuario>>> Get()
         {
             _Logger.LogWarning("Se realiza la consulta de usuarios");
@@ -34,7 +34,7 @@ namespace BarberiAppAutenticacion.Controllers
 
         // GET: CitaController/Details/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "1,4")]
+        [Authorize(Roles = "2,4")]
         public async Task<ActionResult<Usuario>> Get(int id)
         {
             var usuario = await Task.FromResult(_IUsuario.ObtenerUsuarioPorId(id));
@@ -47,7 +47,7 @@ namespace BarberiAppAutenticacion.Controllers
 
         // POST: CitaController/Create
         [HttpPost]
-        [Authorize(Roles = "1,4")]
+        [Authorize(Roles = "2,4")]
         public async Task<ActionResult<Usuario>> Post(Usuario usuario)
         {
             _IUsuario.CrearUsuario(usuario);
@@ -56,7 +56,7 @@ namespace BarberiAppAutenticacion.Controllers
 
         // GET: CitaController/Edit/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "1, 4")]
+        [Authorize(Roles = "2, 4")]
         public async Task<ActionResult<Usuario>> Put(int id, Usuario usuario)
         {
             if (id != usuario.UsuarioID)
@@ -83,7 +83,7 @@ namespace BarberiAppAutenticacion.Controllers
 
         // DELETE api/employee/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "1, 4")]
+        [Authorize(Roles = "2, 4")]
         public async Task<ActionResult<Usuario>> Delete(int id)
         {
             var cita = _IUsuario.EliminarUsuario(id);
