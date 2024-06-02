@@ -2,7 +2,6 @@ using System.Net;
 using RestSharp;
 using Newtonsoft.Json;
 using BarberiAppAutenticacion.Models;
-using Serilog;
 
 namespace BDDAutenticacion.StepDefinitions
 {
@@ -60,12 +59,6 @@ namespace BDDAutenticacion.StepDefinitions
             _request = new RestRequest(resource, Method.Get);
             _request.AddHeader("Authorization", $"Bearer {_token}");
             _response = _client.Execute(_request);
-
-            // Log request and response details for debugging
-            Log.Information("Request URL: {Url}", _client.BuildUri(_request));
-            Log.Information("Request Headers: {Headers}", string.Join(", ", _request.Parameters));
-            Log.Information("Response Status Code: {StatusCode}", _response.StatusCode);
-            Log.Information("Response Content: {Content}", _response.Content);
         }
 
         [Then(@"el código de respuesta debe ser (.*)")]
